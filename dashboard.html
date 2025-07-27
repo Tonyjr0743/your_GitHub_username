@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FUTO Dashboard</title>
+  <style>
+    /* Reset, layout, colors */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI',sans-serif; background:#f4f6fa; color:#333; display:flex; flex-direction:column; min-height:100vh; }
+    .layout { display:flex; flex:1; overflow:hidden; }
+    .sidebar { width:240px; background:linear-gradient(to bottom,#002147,#003366); color:#fff; display:flex; flex-direction:column; justify-content:space-between; }
+    .sidebar h2 { text-align:center; font-size:22px; margin:20px 0; }
+    .nav { display:flex; flex-direction:column; }
+    .nav button { background:none; border:none; color:#fff; padding:16px 20px; text-align:left; font-size:16px; cursor:pointer; transition:background .2s; }
+    .nav button:hover, .nav button.active { background:rgba(255,255,255,.2); }
+    .logout-btn { background:#c0392b; color:#fff; border:none; padding:14px 20px; margin:20px; border-radius:6px; font-weight:bold; cursor:pointer; }
+
+    .main { flex:1; background:#fff; padding:30px; overflow-y:auto; }
+    .tab { display:none; }
+    .tab.active { display:block; }
+    .card { background:#fff; border-radius:12px; padding:25px; margin:20px auto; max-width:800px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+    .card h3 { color:#002147; margin-bottom:12px; font-size:20px; }
+    .card p { color:#333; line-height:1.5; }
+
+    .profile-card { background:linear-gradient(to right,#002b5c,#004080); color:#fff; padding:30px; border-radius:18px; text-align:center; max-width:380px; margin:30px auto; box-shadow:0 6px 16px rgba(0,0,0,0.3); }
+    .profile-card img { width:100px; height:100px; border-radius:50%; margin-bottom:15px; object-fit:cover; }
+    .profile-card h2 { font-size:22px; margin-bottom:6px; }
+    .profile-card p { font-size:14px; opacity:.9; line-height:1.4; }
+    .badge { display:inline-block; background:#004080; color:#fff; border-radius:14px; padding:6px 12px; margin:4px; font-size:14px; }
+
+    input, textarea, select, button { font-family:'Segoe UI',sans-serif; border-radius:6px; }
+    input, textarea, select { width:100%; border:1px solid #ccc; padding:8px; margin-bottom:10px; }
+    button { background:#004080; color:#fff; padding:10px 15px; border:none; cursor:pointer; transition:background .2s; border-radius:6px; }
+    button:hover { background:#002b5c; }
+
+    @media(max-width:768px) {
+      .layout { flex-direction:column; }
+      .sidebar { width:100%; flex-direction:row; align-items:center; padding:10px; }
+      .sidebar h2 { display:none; }
+      .nav button { font-size:14px; padding:10px 15px; }
+      .logout-btn { margin:10px; padding:10px; }
+      .card, .profile-card { margin:15px auto; }
+      .main { padding:20px; }
+    }
+
+    footer { background:#003366; color:#fff; text-align:center; padding:20px 10px; font-size:14px; }
+    footer p { margin-bottom:6px; }
+  </style>
+</head>
+<body>
+
+  <div class="layout">
+    <div class="sidebar">
+      <h2>🎓 Dashboard</h2>
+      <div class="nav">
+        <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+        <button class="tab-btn" data-tab="courses">Courses</button>
+        <button class="tab-btn" data-tab="results">Results</button>
+        <button class="tab-btn" data-tab="fees">Fees</button>
+        <button class="tab-btn" data-tab="registration">Registration</button>
+        <button class="tab-btn" data-tab="profile">Profile</button>
+        <button class="tab-btn" data-tab="achievements">Achievements</button>
+        <button class="tab-btn" data-tab="announcements">Announcements</button>
+        <button class="tab-btn" data-tab="newsadmin">Post News</button>
+      </div>
+      <button class="logout-btn" id="logout">Logout</button>
+    </div>
+
+    <div class="main">
+      <!-- Dashboard Home -->
+      <div id="dashboard" class="tab active">
+        <div id="notifyBanner" class="card">
+          ⚠️ <strong>New Alert:</strong> Admission List Released!
+          <button id="dismissNotify" style="float:right;background:none;border:none;font-size:18px;cursor:pointer;">×</button>
+        </div>
+        <input id="searchInput" type="text" placeholder="🔍 Search dashboard..." />
+        <div class="card"><h3>Registered Courses</h3><p>5 active this semester</p></div>
+        <div class="card"><h3>Outstanding Fees</h3><p>₦15,000 unpaid</p></div>
+        <div class="card"><h3>CGPA</h3><p>4.26 (First Class)</p></div>
+        <div class="card"><h3>Messages</h3><p>2 unread notices</p></div>
+        <div class="card">
+          <h3>CGPA Progress Over Time</h3>
+          <canvas id="gpaChart" style="max-width:100%; height:250px;"></canvas>
+        </div>
+      </div>
+
+      <!-- Courses, Results, Fees, Registration placeholders -->
+      <div id="courses" class="tab"><div class="card"><h3>Courses</h3><p>Your registered courses will be listed here.</p></div></div>
+      <div id="results" class="tab"><div class="card"><h3>Results</h3><p>Your academic results will display here.</p></div></div>
+      <div id="fees" class="tab"><div class="card"><h3>Fees</h3><p>Fee payment status and history.</p></div></div>
+      <div id="registration" class="tab"><div class="card"><h3>Registration</h3><p>Semester registration details and actions.</p></div></div>
+
+      <!-- Profile -->
+      <div id="profile" class="tab">
+        <div class="profile-card">
+          <img id="pfAvatar" src="" alt="Profile Photo"/>
+          <h2 id="pfName">Full Name</h2>
+          <p id="pfEmail">Email</p>
+          <div id="badgeContainer"></div>
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <div id="achievements" class="tab">
+        <div class="card">
+          <h3>Create a Badge</h3>
+          <input id="badgeTitle" type="text" placeholder="Badge Title" />
+          <input id="badgeDesc" type="text" placeholder="Description" />
+          <button id="createBadge">Create Badge</button>
+        </div>
+        <div id="badgeList"></div>
+      </div>
+
+      <!-- Announcements -->
+      <div id="announcements" class="tab">
+        <div class="card">
+          <h3>Post New Announcement</h3>
+          <input id="announceTitle" type="text" placeholder="Title" />
+          <textarea id="announceBody" placeholder="Message..." rows="4"></textarea>
+          <button id="postAnnounce">Post Announcement</button>
+        </div>
+        <div id="announcementList"></div>
+      </div>
+
+      <!-- News posting for staff -->
+      <div id="newsadmin" class="tab">
+        <div class="card">
+          <h3>Post a News Article</h3>
+          <input id="newsTitle" type="text" placeholder="Title" />
+          <input id="newsImage" type="url" placeholder="Image URL (optional)" />
+          <select id="newsCategory">
+            <option>Admissions</option><option>Events</option><option>Academics</option>
+          </select>
+          <textarea id="newsBody" placeholder="Message..." rows="5"></textarea>
+          <button id="postNews">Post News</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Tab switching logic
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Logout handler
+    document.getElementById('logout').onclick = () => {
+      localStorage.removeItem('futotoo_loggedInUser');
+      location = 'login.html';
+    };
+
+    // Load user data
+    const u = JSON.parse(localStorage.getItem('futotoo_loggedInUser'));
+    if (!u) { alert('Please log in!'); location = 'login.html'; }
+    document.getElementById('pfName').innerText = u.fullname;
+    document.getElementById('pfEmail').innerText = u.email;
+    document.getElementById('pfAvatar').src = u.avatar;
+
+    // Safe search logic – only for Dashboard
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+      const dashboardCards = document.querySelectorAll('#dashboard .card');
+      searchInput.addEventListener('input', () => {
+        const term = searchInput.value.toLowerCase();
+        dashboardCards.forEach(card => {
+          const match = card.textContent.toLowerCase().includes(term);
+          card.style.display = match ? 'block' : 'none';
+        });
+      });
+    }
+
+    // Badge rendering
+    function renderBadges() {
+      const arr = JSON.parse(localStorage.getItem('futotoo_badges_'+u.username)||'[]');
+      document.getElementById('badgeList').innerHTML = arr.map(b=>`<div class="card"><h3>${b.title}</h3><p>${b.desc}</p></div>`).join('');
+      document.getElementById('badgeContainer').innerHTML = arr.map(b=>`<div class="badge">${b.title}</div>`).join('');
+    }
+    renderBadges();
+    document.getElementById('createBadge').onclick = () => {
+      const t = document.getElementById('badgeTitle').value.trim(), d = document.getElementById('badgeDesc').value.trim();
+      if (!t||!d) return alert('Enter both fields');
+      const key = 'futotoo_badges_' + u.username;
+      const arr = JSON.parse(localStorage.getItem(key)||'[]');
+      arr.unshift({title:t,desc:d});
+      localStorage.setItem(key, JSON.stringify(arr));
+      renderBadges();
+      document.getElementById('badgeTitle').value = '';
+      document.getElementById('badgeDesc').value = '';
+    };
+
+    // Announcements logic
+    function renderAnnouncements() {
+      const arr = JSON.parse(localStorage.getItem('futotoo_announcements')||'[]');
+      document.getElementById('announcementList').innerHTML = arr.map(a=>`<div class="card"><h3>${a.title}</h3><p>${a.body}</p></div>`).join('');
+    }
+    document.getElementById('postAnnounce').onclick = () => {
+      const t=document.getElementById('announceTitle').value.trim(), b=document.getElementById('announceBody').value.trim();
+      if (!t||!b) return alert('Fill title and message');
+      const arr = JSON.parse(localStorage.getItem('futotoo_announcements')||'[]');
+      arr.unshift({title:t,body:b});
+      localStorage.setItem('futotoo_announcements', JSON.stringify(arr));
+      renderAnnouncements();
+      document.getElementById('announceTitle').value=''; document.getElementById('announceBody').value='';
+    };
+    renderAnnouncements();
+
+    // News posting by staff
+    document.getElementById('postNews').onclick = () => {
+      const t=document.getElementById('newsTitle').value.trim(), b=document.getElementById('newsBody').value.trim(),
+            c=document.getElementById('newsCategory').value, i=document.getElementById('newsImage').value.trim(),
+            d=new Date().toISOString().split('T')[0];
+      if (!t||!b) return alert('Fill title and message');
+      const arr = JSON.parse(localStorage.getItem('futotoo_news')||'[]');
+      arr.unshift({title:t,body:b,category:c,image:i,date:d});
+      localStorage.setItem('futotoo_news', JSON.stringify(arr));
+      alert('News Posted!');
+      document.getElementById('newsTitle').value=''; document.getElementById('newsBody').value=''; document.getElementById('newsImage').value='';
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (u.role !== 'Staff') document.querySelector('[data-tab="newsadmin"]').style.display='none';
+    });
+
+    // Chart.js CGPA chart
+    const ctx = document.getElementById('gpaChart')?.getContext('2d');
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Sem 1','Sem 2','Sem 3','Sem 4'],
+          datasets: [{ label:'CGPA', data:[3.5,3.8,4.0,4.26],
+            backgroundColor:'rgba(0,65,128,0.3)', borderColor:'#004080', borderWidth:2, fill:true, tension:0.3 }]
+        },
+        options:{ responsive:true, plugins:{legend:{display:false}}, scales:{y:{suggestedMin:0,suggestedMax:5}}}
+      });
+    }
+  </script>
+
+  <footer>
+    <p>© 2025 FUTO Too. All rights reserved.</p>
+    <p>Contact us: info@futotoo.edu.ng | +234 800 000 0000</p>
+  </footer>
+</body>
+</html>
