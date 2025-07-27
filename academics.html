@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FUTO - Academics</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fa;
+      color: #222;
+    }
+
+    header {
+      background: #004080;
+      color: white;
+      padding: 10px 20px 5px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: #003366;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 14px;
+      background: #0055aa;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    nav a:hover {
+      background: #0077cc;
+    }
+
+    .hero-video {
+      position: relative;
+      height: 70vh;
+      overflow: hidden;
+    }
+
+    .background-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .video-overlay {
+      position: relative;
+      color: white;
+      text-align: center;
+      top: 40%;
+      transform: translateY(-50%);
+      padding: 0 20px;
+    }
+
+    .video-overlay h2 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    .video-overlay p {
+      font-size: 18px;
+    }
+
+    section {
+      padding: 40px 20px;
+    }
+
+    h3 {
+      text-align: center;
+      color: #004080;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h4 {
+      color: #002147;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #333;
+    }
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: 300px;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+
+    footer {
+      background: #003366;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .video-overlay h2 { font-size: 26px; }
+      .video-overlay p { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FUTO</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academics.html">Academics</a>
+      <a href="admission.html">Admissions</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html" style="background: gold; color: #004080; font-weight: bold;">Login</a>
+    </nav>
+  </header>
+
+  <section class="hero-video">
+    <video autoplay muted loop class="background-video" playsinline>
+      <source src="science.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay">
+      <h2>Academic Faculties & Programs</h2>
+      <p>Explore our diverse and dynamic learning ecosystem at FUTO Too.</p>
+    </div>
+  </section>
+
+  <section>
+    <h3>Faculties</h3>
+    <div class="grid">
+      <div class="card"><h4>Engineering</h4><p>Mechanical, Civil, Electrical, Petroleum Engineering, etc.</p></div>
+      <div class="card"><h4>Science</h4><p>Physics, Chemistry, Biology, Biochemistry, Mathematics.</p></div>
+      <div class="card"><h4>Agriculture</h4><p>Agronomy, Crop Science, Soil Science, Animal Production.</p></div>
+      <div class="card"><h4>ICT</h4><p>Computer Science, Cybersecurity, Software Engineering.</p></div>
+      <div class="card"><h4>Health Sciences</h4><p>Public Health, Medical Lab Science, Nursing (coming soon).</p></div>
+      <div class="card"><h4>Environmental Tech</h4><p>Urban Planning, Surveying, Architecture, GIS.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Departments</h3>
+    <div class="grid">
+      <div class="card"><h4>Computer Science</h4><p>Modern curriculum with AI, Web, Mobile & Data Science focus.</p></div>
+      <div class="card"><h4>Civil Engineering</h4><p>Infrastructure innovation, smart cities & green buildings.</p></div>
+      <div class="card"><h4>Crop Science</h4><p>Improving agricultural yield with biotechnology.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Programs Offered</h3>
+    <p style="max-width:900px;margin:auto;text-align:center;">FUTO Too offers Undergraduate (B.Sc., B.Tech.), Postgraduate (M.Sc., Ph.D.), and Professional Certification programs designed to equip students with real-world skills and research excellence.</p>
+    <iframe src="https://www.youtube.com/embed/V1Pl8CzNzCw" title="Virtual Tour" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"></iframe>
+  </section>
+
+  <footer>
+    <p>Contact us: info@futotoo.edu.ng | +234 800 000 0000</p>
+    <p>&copy; 2025 FUTO Too. All rights reserved.</p>
+  </footer>
+</body>
+</html>
