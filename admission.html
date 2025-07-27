@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FUTO - Admissions</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',sans-serif;background:#f4f7fa;color:#222;}
+    header{background:#004080;color:white;text-align:center;padding:12px 0;}
+    header h1{font-size:30px;margin-bottom:8px;}
+    nav{display:flex;justify-content:center;gap:12px;background:#003366;padding:10px 0;}
+    nav a{color:white;text-decoration:none;padding:8px 14px;background:#0055aa;border-radius:5px;transition:.3s;}
+    nav a:hover{background:#0077cc;}
+    .hero-video{position:relative;height:60vh;overflow:hidden;}
+    .background-video{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:-1;}
+    .video-overlay{position:relative;color:white;text-align:center;top:40%;transform:translateY(-50%);padding:0 20px;}
+    .video-overlay h2{font-size:38px;margin-bottom:8px;}
+    .video-overlay p{font-size:18px;}
+    section{padding:30px 20px;}
+    .cta-bar{text-align:center;margin:20px 0;}
+    .cta-bar a{display:inline-block;margin:0 10px;padding:12px 25px;font-size:16px;color:white;background:#e63946;border-radius:6px;text-decoration:none;transition:.3s;}
+    .cta-bar a:hover{background:#c02f3e;}
+    .checklist, .faqs{max-width:800px;margin:auto;margin-bottom:30px;}
+    .checklist li,input[type=checkbox]{margin:8px 0;font-size:16px;}
+    .status{max-width:800px;margin: auto;margin-bottom:30px;}
+    .status input{padding:8px;width:60%;margin-right:8px;border:1px solid #ccc;border-radius:4px;}
+    .faq-item{margin-bottom:12px;border-bottom:1px solid #ddd;}
+    .faq-item button{width:100%;text-align:left;padding:12px;font-size:16px;background:#f1f1f1;border:none;cursor:pointer;outline:none;}
+    .faq-item .answer{display:none;padding:10px 12px;background:#fff;}
+    footer{text-align:center;background:#003366;color:white;padding:20px;}
+    @media(max-width:600px){.video-overlay h2{font-size:28px}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>FUTO </h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="academics.html">Academics</a>
+      <a href="admission.html">Admissions</a>
+    </nav>
+  </header>
+
+  <section class="hero-video">
+    <video autoplay muted loop class="background-video" playsinline>
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay">
+      <h2>Admissions</h2>
+      <p>Join FUTO Too — vibrant learning & innovation awaits.</p>
+    </div>
+  </section>
+
+  <div class="cta-bar">
+    <a href="#">Apply Now</a>
+    <a href="#checklist">Checklist</a>
+    <a href="#faqs">FAQs</a>
+  </div>
+
+  <section id="checklist" class="checklist">
+    <h3>Admission Checklist</h3>
+    <ul>
+      <li><label><input type="checkbox" data-key="form"> Fill application form</label></li>
+      <li><label><input type="checkbox" data-key="credentials"> Upload credentials</label></li>
+      <li><label><input type="checkbox" data-key="payment"> Pay application fee</label></li>
+      <li><label><input type="checkbox" data-key="status"> Check status online</label></li>
+    </ul>
+  </section>
+
+  <section class="status">
+    <h3>Check Admission Status</h3>
+    <input id="refNo" type="text" placeholder="Enter your application reference">
+    <button id="checkStatus">Check Status</button>
+    <p id="statusMsg"></p>
+  </section>
+
+  <section id="faqs" class="faqs">
+    <h3>FAQs</h3>
+    <div class="faq-item"><button>What is the application fee?</button><div class="answer">₦5,000 for undergraduates.</div></div>
+    <div class="faq-item"><button>Deadline to apply?</button><div class="answer">August 31, 2025.</div></div>
+    <div class="faq-item"><button>Can I upload credentials later?</button><div class="answer">Yes — within 7 days of submission.</div></div>
+  </section>
+
+  <footer>
+    <p>Contact us: info@futotoo.edu.ng | +234 800 000 0000</p>
+    <p>&copy; 2025 FUTO Too. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Checklist state save
+    document.querySelectorAll('.checklist input[type=checkbox]').forEach(cb => {
+      const val = localStorage.getItem('check_' + cb.dataset.key);
+      if (val === 'done') cb.checked = true;
+      cb.addEventListener('change', () => {
+        localStorage.setItem('check_' + cb.dataset.key, cb.checked ? 'done' : 'pending');
+      });
+    });
+
+    // Status tracker
+    document.getElementById('checkStatus').onclick = () => {
+      const ref = document.getElementById('refNo').value.trim();
+      const msg = ref.toLowerCase() === 'futotoo123'
+        ? '🎉 Congratulations, you are admitted!'
+        : 'Still processing. Check back later.';
+      document.getElementById('statusMsg').innerText = msg;
+    };
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-item button').forEach(btn => {
+      btn.onclick = () => {
+        const ans = btn.nextElementSibling;
+        ans.style.display = ans.style.display === 'block' ? 'none' : 'block';
+      };
+    });
+  </script>
+</body>
+</html>
